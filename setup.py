@@ -7,7 +7,7 @@ setup(
     author="Crypto Risk Analytics",
     packages=find_packages(),
     install_requires=[
-        "flask>=2.3.0",
+        "flask>=2.3.2",
         "requests>=2.31.0",
         "pandas>=2.0.0",
         "numpy>=1.24.0",

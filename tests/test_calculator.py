@@ -145,3 +145,47 @@ class TestRiskCalculator:
         bitcoin_entries = RiskCalculator.get_risk_by_cryptocurrency(entries, "Bitcoin")
         assert len(bitcoin_entries) == 2
         assert all(e.cryptocurrency == "Bitcoin" for e in bitcoin_entries)
+
+    def test_risk_score_rounding(self):
+        """Test that risk scores are rounded to 2 decimal places"""
+        entry = CryptoRiskEntry(
+            cryptocurrency="Bitcoin",
+            risk_level=RiskLevel.MEDIUM,
+            reporter="Test User",
+            report_date=date.today(),
+            volatility_index=15.777,  # Will produce decimals
+        )
+        score = RiskCalculator.calculate_risk_score(entry)
+        # Check it's rounded to 2 decimal places
+        assert score == round(score, 2)
+        assert len(str(score).split('.')[-1]) <= 2
+
+    def test_average_risk_rounding(self):
+        """Test that average risk is rounded to 2 decimal places"""
+        entries = [
+            CryptoRiskEntry(
+                cryptocurrency="Bitcoin",
+                risk_level=RiskLevel.LOW,
+                reporter="User1",
+                report_date=date.today(),
+                risk_score=20.0,
+            ),
+            CryptoRiskEntry(
+                cryptocurrency="Bitcoin",
+                risk_level=RiskLevel.HIGH,
+                reporter="User2",
+                report_date=date.today(),
+                risk_score=71.0,
+            ),
+            CryptoRiskEntry(
+                cryptocurrency="Bitcoin",
+                risk_level=RiskLevel.MEDIUM,
+                reporter="User3",
+                report_date=date.today(),
+                risk_score=48.0,
+            ),
+        ]
+        # Average of 20, 71, 48 = 46.333... (repeating decimal)
+        avg = RiskCalculator.calculate_average_risk(entries)
+        assert avg == 46.33
+        assert len(str(avg).split('.')[-1]) <= 2
