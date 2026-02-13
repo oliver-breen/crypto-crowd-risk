@@ -6,7 +6,7 @@ including network congestion, fee markets, and attack economics.
 """
 
 from typing import Dict, List, Any
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class MarketConditionAnalyzer:
@@ -26,7 +26,7 @@ class MarketConditionAnalyzer:
         """
         analysis = {
             "network": network_data.get("name", "UNKNOWN"),
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "attack_cost_analysis": {},
             "security_recommendations": []
         }
@@ -251,7 +251,7 @@ class MarketConditionAnalyzer:
         report_lines = [
             "=" * 80,
             "CRYPTOCURRENCY MARKET SECURITY CONDITIONS REPORT",
-            f"Generated: {datetime.utcnow().isoformat()}Z",
+            f"Generated: {datetime.now(timezone.utc).isoformat()}",
             "=" * 80,
             ""
         ]

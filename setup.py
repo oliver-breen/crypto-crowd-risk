@@ -22,7 +22,7 @@ setup(
     ],
     python_requires=">=3.8",
     install_requires=[
-        "cryptography>=42.0.0",
+        "cryptography>=46.0.5",
         "requests>=2.31.0",
         "python-dotenv>=1.0.0",
         "pyyaml>=6.0.1",
