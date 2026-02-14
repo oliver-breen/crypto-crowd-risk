@@ -1,157 +1,207 @@
-# Crypto Crowd Risk
+# Crypto Crowd Risk - OWASP 2025 Cryptography Assessment Tool
 
-A Python-based cryptocurrency crowd-sourced risk assessment application. This tool allows users to track, analyze, and assess cryptocurrency risks through crowd-sourced data.
+A comprehensive Python application for assessing cryptographic security in cryptocurrency and blockchain systems according to OWASP 2025 guidelines.
 
-## Features
+## 🎯 Overview
 
-- **Risk Entry Management**: Add and track cryptocurrency risk assessments
-- **Risk Calculation**: Automated risk scoring based on multiple factors:
-  - Base risk level (Low, Medium, High, Critical)
-  - Volatility index
-  - Crowd sentiment (Bullish, Neutral, Bearish)
-- **Data Storage**: SQLite database for persistent storage
-- **CLI Interface**: Easy-to-use command-line interface
-- **Statistics**: View aggregate risk statistics by cryptocurrency
+**Crypto Crowd Risk** takes a novel approach to cryptocurrency security by combining:
+- **OWASP 2025 Cryptography Compliance**: Validates cryptographic implementations against the latest OWASP standards
+- **Cryptocurrency-Specific Risk Analysis**: Evaluates wallet security, blockchain protocols, and transaction signing
+- **Market-Based Security Assessment**: Introduces "crowd risk scoring" that considers market conditions, development activity, and economic security
+- **Current Market Conditions**: Analyzes fee markets, mempool security, and network economics
 
-## Installation
+## 🚀 Key Features
 
-### Prerequisites
+### 1. OWASP 2025 Compliance Checker
+- ✅ Validates encryption algorithms (AES-256-GCM, ChaCha20-Poly1305)
+- ✅ Checks key lengths (RSA-4096+, ECC P-384+)
+- ✅ Identifies deprecated algorithms (MD5, SHA-1, 3DES, RSA-2048)
+- ✅ Assesses quantum resistance
+- ✅ Evaluates cryptographic agility
+
+### 2. Cryptocurrency Risk Analyzer
+- 💰 Wallet security assessment
+- 🔗 Blockchain protocol analysis (Bitcoin, Ethereum, etc.)
+- ✍️ Transaction signing security evaluation
+- 📊 Novel "crowd risk scoring" based on market indicators
+- 🔐 Multi-signature and hardware wallet recommendations
+
+### 3. Market Condition Analyzer
+- 📈 Network security economics (51% attack cost analysis)
+- 💸 Fee market security implications
+- 🔄 Mempool security and MEV analysis
+- ⚡ Cryptographic agility assessment
+- 🛡️ Economic security ratio calculations
+
+## 📦 Installation
+
+### Requirements
 - Python 3.8 or higher
+- pip package manager
 
-### Setup
+### Install from source
 
-1. Clone the repository:
 ```bash
+# Clone the repository
 git clone https://github.com/oliver-breen/crypto-crowd-risk.git
 cd crypto-crowd-risk
-```
 
-2. Install dependencies:
-```bash
+# Install dependencies
 pip install -r requirements.txt
-```
 
-Or install in development mode:
-```bash
+# Install the package
 pip install -e .
 ```
 
-## Usage
+## 🔧 Usage
 
-### Command-Line Interface
+### Command Line Interface
 
-#### Add a Risk Entry
-
+Run all analyses:
 ```bash
-python -m crypto_crowd_risk.cli add Bitcoin high "John Doe" \
-  --description "High market volatility observed" \
-  --volatility 25.5 \
-  --sentiment bearish
+crypto-risk all
 ```
 
-#### List All Entries
-
+Run specific analyses:
 ```bash
-python -m crypto_crowd_risk.cli list
-```
+# OWASP compliance check only
+crypto-risk owasp
 
-#### List Entries for Specific Cryptocurrency
+# Cryptocurrency risk analysis only
+crypto-risk crypto
 
-```bash
-python -m crypto_crowd_risk.cli list --cryptocurrency Bitcoin
-```
+# Market conditions analysis only
+crypto-risk market
 
-#### View Statistics
-
-```bash
-python -m crypto_crowd_risk.cli stats Bitcoin
+# Show help
+crypto-risk help
 ```
 
 ### Python API
 
 ```python
-from datetime import date
-from crypto_crowd_risk import (
-    CryptoRiskEntry, RiskLevel, CrowdSentiment,
-    RiskCalculator, Database
-)
+from crypto_risk import OWASPCryptoChecker, CryptoRiskAnalyzer, MarketConditionAnalyzer
 
-# Create database
-db = Database("data/crypto_risk.db")
+# Check OWASP compliance
+checker = OWASPCryptoChecker()
+result = checker.check_algorithm_strength("AES-256-GCM", key_length=256)
+print(result['recommendations'])
 
-# Create a risk entry
-entry = CryptoRiskEntry(
-    cryptocurrency="Bitcoin",
-    risk_level=RiskLevel.HIGH,
-    reporter="Jane Smith",
-    report_date=date.today(),
-    volatility_index=20.0,
-    crowd_sentiment=CrowdSentiment.BEARISH,
-)
+# Analyze wallet security
+analyzer = CryptoRiskAnalyzer()
+wallet_config = {
+    "type": "hot_wallet",
+    "key_storage": "encrypted",
+    "mnemonic_protected": True,
+    "multisig_enabled": False,
+    "hardware_wallet": False,
+    "value": 50000
+}
+wallet_analysis = analyzer.analyze_wallet_security(wallet_config)
+print(f"Risk Score: {wallet_analysis['risk_score']}/10")
 
-# Add entry to database (automatically calculates risk score)
-entry_id = db.add_entry(entry)
-
-# Retrieve entries
-all_entries = db.get_all_entries()
-bitcoin_entries = db.get_entries_by_crypto("Bitcoin")
-
-# Calculate average risk
-avg_risk = RiskCalculator.calculate_average_risk(bitcoin_entries)
+# Analyze market conditions
+market_analyzer = MarketConditionAnalyzer()
+network_data = {
+    "name": "Bitcoin",
+    "hashrate": 500_000_000,  # TH/s
+    "hash_cost": 0.05,
+    "total_value_secured": 1_000_000_000_000
+}
+security_economics = market_analyzer.analyze_network_security_economics(network_data)
 ```
 
-## Risk Scoring Algorithm
+## 🔬 Novel Approach: Crowd Risk Scoring
 
-The risk score (0-100) is calculated using:
+One of the unique features of this tool is **Crowd Risk Scoring** - a novel methodology that assesses cryptocurrency security based on market dynamics:
 
-1. **Base Score**: Determined by risk level
-   - Low: 20 points
-   - Medium: 45 points
-   - High: 70 points
-   - Critical: 90 points
+- **Market Capitalization**: Lower market cap = less security scrutiny
+- **Development Activity**: GitHub commits indicate active maintenance
+- **Trading Volume vs. Active Addresses**: Detects potential manipulation
+- **Economic Security**: Calculates cost of attacking vs. value secured
 
-2. **Volatility Factor**: 0-30 points based on volatility index
+This approach recognizes that security in cryptocurrency is not just about cryptographic strength, but also about ecosystem health and economic incentives.
 
-3. **Sentiment Factor**: -10 to +10 points
-   - Bullish: -10 (reduces risk)
-   - Neutral: 0
-   - Bearish: +10 (increases risk)
+## 📋 OWASP 2025 Cryptography Guidelines Addressed
 
-Final score is capped between 0 and 100.
+This tool implements checks for OWASP 2025's key cryptographic recommendations:
 
-## Testing
+1. **Modern Encryption Standards**
+   - AES-256-GCM (authenticated encryption)
+   - ChaCha20-Poly1305
+   - Minimum 256-bit symmetric keys
 
-Run the test suite:
+2. **Strong Asymmetric Cryptography**
+   - RSA-4096 or higher
+   - ECDSA with P-384 or P-521 curves
+   - Ed25519 for signatures
 
-```bash
-pytest
-```
+3. **Secure Hash Functions**
+   - SHA-256, SHA-384, SHA-512
+   - SHA-3 family
+   - Deprecation of SHA-1 and MD5
 
-Run with coverage:
+4. **Quantum Considerations**
+   - Assessment of quantum vulnerability
+   - Planning for post-quantum migration
+   - Hybrid cryptographic approaches
 
-```bash
-pytest --cov=crypto_crowd_risk
-```
+5. **Cryptographic Agility**
+   - Algorithm versioning support
+   - Upgrade mechanisms
+   - Governance processes for security updates
 
-## Project Structure
+## 🏗️ Project Structure
 
 ```
 crypto-crowd-risk/
-├── crypto_crowd_risk/      # Main package
-│   ├── __init__.py
-│   ├── models.py           # Data models
-│   ├── calculator.py       # Risk calculation logic
-│   ├── database.py         # Database management
-│   └── cli.py              # Command-line interface
-├── tests/                  # Test suite
-│   ├── test_models.py
-│   └── test_calculator.py
-├── data/                   # Data directory (created at runtime)
-├── requirements.txt        # Dependencies
-├── setup.py               # Package setup
-└── README.md              # This file
+├── crypto_risk/
+│   ├── __init__.py              # Package initialization
+│   ├── owasp_checker.py         # OWASP 2025 compliance checker
+│   ├── risk_analyzer.py         # Cryptocurrency risk analysis
+│   ├── market_analyzer.py       # Market condition security analysis
+│   └── cli.py                   # Command-line interface
+├── requirements.txt             # Python dependencies
+├── setup.py                     # Package setup configuration
+├── README.md                    # This file
+├── LICENSE                      # MIT License
+└── .gitignore                   # Git ignore rules
 ```
 
-## License
+## 🔒 Security Considerations
 
-See LICENSE file for details.
+This tool is designed for **assessment and education** purposes. When using it:
+
+- Always validate findings with security professionals
+- Keep cryptographic libraries up to date
+- Consider the context of your specific use case
+- Plan for quantum-resistant algorithms now
+- Implement defense in depth, not just cryptographic security
+
+## 🤝 Contributing
+
+Contributions are welcome! This project addresses cutting-edge security challenges in cryptocurrency. Areas for contribution:
+
+- Additional blockchain protocol analyzers
+- Post-quantum cryptography modules
+- Real-time market data integration
+- Additional OWASP guideline implementations
+- Test coverage improvements
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Resources
+
+- [OWASP Cryptographic Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html)
+- [OWASP Key Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Key_Management_Cheat_Sheet.html)
+- [NIST Post-Quantum Cryptography](https://csrc.nist.gov/projects/post-quantum-cryptography)
+
+## 👤 Author
+
+**Oliver Breen**
+
+---
+
+**⚠️ Disclaimer**: This tool provides security assessments based on OWASP 2025 guidelines and industry best practices. It should be used as part of a comprehensive security strategy, not as the sole security measure. Always consult with qualified security professionals for production systems.
